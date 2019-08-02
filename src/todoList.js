@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { Component, Fragment } from 'react'
 import TodoItem from './todoItem'
-class TodoList extends React.Component {
+class TodoList extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -47,8 +47,13 @@ class TodoList extends React.Component {
         })
     }
     render() {
+        /**
+         * react构建出的html代码需要在最外层包裹一个父元素，一般是一个<div></div>
+         * 有时候使用flex布局的话对html代码结构有要求，则可以使用react提供的Fragment标签进行包裹
+         * 在渲染到页面时会自动去掉，这样就不会影响到布局了
+         */
         return (
-            <div>
+            <Fragment>
                 <div>
                     <input
                         type="text"
@@ -58,10 +63,12 @@ class TodoList extends React.Component {
                     {/* 当按钮被点击的的时候，this指向的是TodoList这个组件类，但是当事件函数运行的时候，this会指向当前调用的对象，也就是button按钮
                         所以在绑定事件函数的时候，需要使用bind方法将this固定在TodoList组件类上
                     */}
-                    <button onClick={this.handleBtnAddClick}>add</button>
+                    <button className="btn" onClick={this.handleBtnAddClick}>
+                        add
+                    </button>
                 </div>
                 <ul>{this.getTodoItems()}</ul>
-            </div>
+            </Fragment>
         )
     }
 }
