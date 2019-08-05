@@ -1,5 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import TodoItem from './todoItem'
+
+/**
+ * this.setState是异步执行的，代码块中一起使用时会出现先setState执行的情况，this.setState的第二个参数是一个回调函数，在数据更新之后被调用
+ */
+
 class TodoList extends Component {
     constructor(props) {
         super(props)
