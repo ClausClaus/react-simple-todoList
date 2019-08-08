@@ -51,12 +51,22 @@ class TodoList extends Component {
             )
         })
     }
+    // 组件即将被挂载到页面的时候自动执行
+    componentWillMount() {
+        console.log('componentWillMount')
+    }
+    // 组件被更新之前，他会自动被执行
+    shouldComponentUpdate() {
+        console.log('shouldComponentUpdate')
+    }
+    // 组件内容更新的时候都会执行
     render() {
         /**
          * react构建出的html代码需要在最外层包裹一个父元素，一般是一个<div></div>
          * 有时候使用flex布局的话对html代码结构有要求，则可以使用react提供的Fragment标签进行包裹
          * 在渲染到页面时会自动去掉，这样就不会影响到布局了
          */
+        console.log('render')
         return (
             <Fragment>
                 <div>
@@ -75,6 +85,10 @@ class TodoList extends Component {
                 <ul>{this.getTodoItems()}</ul>
             </Fragment>
         )
+    }
+    // 组件被挂载到页面之后被执行
+    componentDidMount() {
+        console.log('componentDidMount')
     }
 }
 

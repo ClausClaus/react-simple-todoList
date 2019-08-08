@@ -2,7 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 // import TodoList from './todoList'
 // import Clock from './clock'
-import CreateDOM from './createElement';
+// import CreateDOM from './createElement';
+import Lifecycle from './lifecycle'
 import './styles.css'
 
-ReactDOM.render(<CreateDOM />, document.getElementById('root'))
+ReactDOM.render(<Lifecycle />, document.getElementById('root'))
