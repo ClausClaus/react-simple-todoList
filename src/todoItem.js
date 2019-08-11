@@ -16,7 +16,7 @@ class TodoItem extends Component {
         const { content } = this.props
         return (
             <li onClick={this.handleDelete}>
-                {this.props.DefaultText} -{content}
+                {content}
             </li>
         )
     }

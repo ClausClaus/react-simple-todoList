@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import TodoItem from './todoItem'
+import 'antd/dist/antd.css'
+import { Input, Button } from 'antd'
 
 /**
  * this.setState是异步执行的，代码块中一起使用时会出现先setState执行的情况，this.setState的第二个参数是一个回调函数，在数据更新之后被调用
@@ -41,23 +43,17 @@ class TodoList extends Component {
     getTodoItems() {
         return this.state.list.map((item, index) => {
             return (
-                // 父组件通过属性的方式向子组件传递参数，子组件通过参数接收父组件传递的参数
-                <TodoItem
-                    handleBtnDeleteClick={this.handleBtnDeleteClick}
-                    key={index}
-                    content={item}
-                    index={index}
-                />
+                <div>
+                    {/* 父组件通过属性的方式向子组件传递参数，子组件通过参数接收父组件传递的参数 */}
+                    <TodoItem
+                        handleBtnDeleteClick={this.handleBtnDeleteClick}
+                        key={index}
+                        content={item}
+                        index={index}
+                    />
+                </div>
             )
         })
-    }
-    // 组件即将被挂载到页面的时候自动执行
-    componentWillMount() {
-        console.log('componentWillMount')
-    }
-    // 组件被更新之前，他会自动被执行
-    shouldComponentUpdate() {
-        console.log('shouldComponentUpdate')
     }
     // 组件内容更新的时候都会执行
     render() {
@@ -66,29 +62,29 @@ class TodoList extends Component {
          * 有时候使用flex布局的话对html代码结构有要求，则可以使用react提供的Fragment标签进行包裹
          * 在渲染到页面时会自动去掉，这样就不会影响到布局了
          */
-        console.log('render')
         return (
             <Fragment>
-                <div>
-                    <input
-                        type="text"
+                <div style={{ marginTop: '10px' }}>
+                    <Input
                         value={this.state.inputVal}
                         onChange={this.handleInputChange}
+                        placeholder="todo item input"
+                        style={{
+                            width: '300px',
+                            marginRight: '10px',
+                            marginLeft: '10px'
+                        }}
                     />
                     {/* 当按钮被点击的的时候，this指向的是TodoList这个组件类，但是当事件函数运行的时候，this会指向当前调用的对象，也就是button按钮
                         所以在绑定事件函数的时候，需要使用bind方法将this固定在TodoList组件类上
                     */}
-                    <button className="btn" onClick={this.handleBtnAddClick}>
+                    <Button onClick={this.handleBtnAddClick} type="primary">
                         add
-                    </button>
+                    </Button>
                 </div>
                 <ul>{this.getTodoItems()}</ul>
             </Fragment>
         )
-    }
-    // 组件被挂载到页面之后被执行
-    componentDidMount() {
-        console.log('componentDidMount')
     }
 }
 
