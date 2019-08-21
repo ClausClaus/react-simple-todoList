@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import TodoItem from './todoItem'
 import 'antd/dist/antd.css'
 import { Input, Button } from 'antd'
+import store from './store'
 
 /**
  * this.setState是异步执行的，代码块中一起使用时会出现先setState执行的情况，this.setState的第二个参数是一个回调函数，在数据更新之后被调用
@@ -10,48 +11,54 @@ import { Input, Button } from 'antd'
 class TodoList extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            list: [],
-            inputVal: ''
-        }
+        this.state = store.getState()
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleStoreChange = this.handleStoreChange.bind(this)
         this.handleBtnAddClick = this.handleBtnAddClick.bind(this)
         this.handleBtnDeleteClick = this.handleBtnDeleteClick.bind(this)
+        // 订阅store中数据发生变化时执行的函数
+        store.subscribe(this.handleStoreChange)
+    }
+    handleStoreChange() {
+        console.log('store change')
+        this.setState({ ...store.getState() })
     }
     handleInputChange(e) {
-        this.setState({
-            inputVal: e.target.value
-        })
+        const action = {
+            type: 'change_input_value',
+            value: e.target.value
+        }
+        store.dispatch(action)
     }
     handleBtnAddClick() {
         let { inputVal } = this.state
         if (!inputVal.length) {
             return
         }
-        this.setState({
-            list: [...this.state.list, inputVal],
-            inputVal: ''
-        })
+        const action = {
+            type: 'add_todo_item'
+        }
+        store.dispatch(action)
     }
     handleBtnDeleteClick(index) {
         let list = [...this.state.list]
         list.splice(index, 1)
-        this.setState({
-            list
-        })
+        const action = {
+            type: 'del_todo_item',
+            index
+        }
+        store.dispatch(action)
     }
     getTodoItems() {
         return this.state.list.map((item, index) => {
+            //  父组件通过属性的方式向子组件传递参数，子组件通过参数接收父组件传递的参数
             return (
-                <div>
-                    {/* 父组件通过属性的方式向子组件传递参数，子组件通过参数接收父组件传递的参数 */}
-                    <TodoItem
-                        handleBtnDeleteClick={this.handleBtnDeleteClick}
-                        key={index}
-                        content={item}
-                        index={index}
-                    />
-                </div>
+                <TodoItem
+                    handleBtnDeleteClick={this.handleBtnDeleteClick}
+                    key={Math.random(index, 100)}
+                    content={item}
+                    index={index}
+                />
             )
         })
     }
