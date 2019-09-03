@@ -3,6 +3,11 @@ import TodoItem from './todoItem'
 import 'antd/dist/antd.css'
 import { Input, Button } from 'antd'
 import store from './store'
+import {
+    CHANGE_INPUT_VALUE,
+    ADD_TODO_ITEM,
+    DEL_TODO_ITEM
+} from './store/actionTypes'
 
 /**
  * this.setState是异步执行的，代码块中一起使用时会出现先setState执行的情况，this.setState的第二个参数是一个回调函数，在数据更新之后被调用
@@ -25,7 +30,7 @@ class TodoList extends Component {
     }
     handleInputChange(e) {
         const action = {
-            type: 'change_input_value',
+            type: CHANGE_INPUT_VALUE,
             value: e.target.value
         }
         store.dispatch(action)
@@ -36,7 +41,7 @@ class TodoList extends Component {
             return
         }
         const action = {
-            type: 'add_todo_item'
+            type: ADD_TODO_ITEM
         }
         store.dispatch(action)
     }
@@ -44,7 +49,7 @@ class TodoList extends Component {
         let list = [...this.state.list]
         list.splice(index, 1)
         const action = {
-            type: 'del_todo_item',
+            type: DEL_TODO_ITEM,
             index
         }
         store.dispatch(action)
