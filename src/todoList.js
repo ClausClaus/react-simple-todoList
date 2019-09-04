@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import TodoItem from './todoItem'
 import 'antd/dist/antd.css'
-import { Input, Button } from 'antd'
 import store from './store'
+import TodoListOperate from './TodoListOperate'
 import {
     inputChangeAction,
     addItemAction,
@@ -64,26 +64,14 @@ class TodoList extends Component {
          * 有时候使用flex布局的话对html代码结构有要求，则可以使用react提供的Fragment标签进行包裹
          * 在渲染到页面时会自动去掉，这样就不会影响到布局了
          */
+        const props = {
+            inputVal: this.state.inputVal,
+            handleBtnAddClick: this.handleBtnAddClick,
+            handleInputChange: this.handleInputChange
+        }
         return (
             <Fragment>
-                <div style={{ marginTop: '10px' }}>
-                    <Input
-                        value={this.state.inputVal}
-                        onChange={this.handleInputChange}
-                        placeholder="todo item input"
-                        style={{
-                            width: '300px',
-                            marginRight: '10px',
-                            marginLeft: '10px'
-                        }}
-                    />
-                    {/* 当按钮被点击的的时候，this指向的是TodoList这个组件类，但是当事件函数运行的时候，this会指向当前调用的对象，也就是button按钮
-                        所以在绑定事件函数的时候，需要使用bind方法将this固定在TodoList组件类上
-                    */}
-                    <Button onClick={this.handleBtnAddClick} type="primary">
-                        add
-                    </Button>
-                </div>
+                <TodoListOperate {...props} />
                 <ul>{this.getTodoItems()}</ul>
             </Fragment>
         )
