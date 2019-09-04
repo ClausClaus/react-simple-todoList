@@ -4,11 +4,10 @@ import 'antd/dist/antd.css'
 import { Input, Button } from 'antd'
 import store from './store'
 import {
-    CHANGE_INPUT_VALUE,
-    ADD_TODO_ITEM,
-    DEL_TODO_ITEM
-} from './store/actionTypes'
-
+    inputChangeAction,
+    addItemAction,
+    delItemAction
+} from './store/actionCreators'
 /**
  * this.setState是异步执行的，代码块中一起使用时会出现先setState执行的情况，this.setState的第二个参数是一个回调函数，在数据更新之后被调用
  */
@@ -25,14 +24,10 @@ class TodoList extends Component {
         store.subscribe(this.handleStoreChange)
     }
     handleStoreChange() {
-        console.log('store change')
         this.setState({ ...store.getState() })
     }
     handleInputChange(e) {
-        const action = {
-            type: CHANGE_INPUT_VALUE,
-            value: e.target.value
-        }
+        const action = inputChangeAction(e.target.value)
         store.dispatch(action)
     }
     handleBtnAddClick() {
@@ -40,18 +35,13 @@ class TodoList extends Component {
         if (!inputVal.length) {
             return
         }
-        const action = {
-            type: ADD_TODO_ITEM
-        }
+        const action = addItemAction()
         store.dispatch(action)
     }
     handleBtnDeleteClick(index) {
         let list = [...this.state.list]
         list.splice(index, 1)
-        const action = {
-            type: DEL_TODO_ITEM,
-            index
-        }
+        const action = delItemAction(index)
         store.dispatch(action)
     }
     getTodoItems() {
